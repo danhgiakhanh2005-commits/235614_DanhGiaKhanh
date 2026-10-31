@@ -21,7 +21,7 @@
 
 ```
 235614_DanhGiaKhanh/
-├── backend/     # API Node.js + Express
+├── backend/     # API Node.js + Express (có Dockerfile)
 ├── frontend/    # Giao diện React
 ├── .gitignore
 └── README.md
@@ -65,7 +65,7 @@ Frontend chạy tại http://localhost:5173
 |---|---|
 | PORT | Cổng chạy backend (mặc định 5000) |
 | MONGODB_URI | Chuỗi kết nối MongoDB Atlas |
-| CORS_ORIGIN | Địa chỉ frontend được phép gọi API (`*` là cho phép tất cả) |
+| CORS_ORIGIN | Địa chỉ frontend được phép gọi API, nhiều địa chỉ cách nhau bằng dấu phẩy (`*` là cho phép tất cả) |
 
 ### Frontend (`frontend/.env`)
 
@@ -79,10 +79,12 @@ Tệp `.env` chứa thông tin nhạy cảm nên không được đưa lên GitH
 
 | Phương thức | Đường dẫn | Chức năng |
 |---|---|---|
-| GET | /api/devices?search=... | Danh sách, tìm kiếm |
-| GET | /api/devices/:id | Xem chi tiết |
-| POST | /api/devices | Thêm thiết bị |
-| PUT | /api/devices/:id | Cập nhật thiết bị |
+| GET | /health | Kiểm tra trạng thái backend và kết nối MongoDB |
+| GET | /api/devices | Lấy danh sách thiết bị |
+| GET | /api/devices?search=... | Tìm kiếm thiết bị theo từ khóa |
+| GET | /api/devices/:id | Xem thông tin một thiết bị |
+| POST | /api/devices | Thêm thiết bị mới |
+| PUT | /api/devices/:id | Cập nhật thông tin thiết bị |
 | DELETE | /api/devices/:id | Xóa thiết bị |
 
 ## 7. Cấu hình địa chỉ API khi triển khai
@@ -93,6 +95,49 @@ Frontend lấy địa chỉ API theo thứ tự ưu tiên:
 2. Biến môi trường `VITE_API_URL`
 3. Mặc định `http://localhost:5000`
 
-## 8. Triển khai
+## 8. Chạy backend bằng Docker
+
+Image trên Docker Hub: https://hub.docker.com/r/danhgiakhanh/backend
+
+Image không chứa thông tin bí mật. Các biến môi trường được truyền vào khi chạy container.
+
+### Chạy từ image trên Docker Hub
+
+Cách 1: truyền biến trực tiếp (PowerShell, một dòng):
+
+```
+docker run -d --name backend -p 5000:5000 -e PORT=5000 -e MONGODB_URI="<chuoi-ket-noi-mongodb-atlas>" -e CORS_ORIGIN="*" danhgiakhanh/backend
+```
+
+Cách 2: dùng tệp `.env` (giá trị không đặt trong dấu nháy):
+
+```
+docker run -d --name backend -p 5000:5000 --env-file .env danhgiakhanh/backend
+```
+
+Kiểm tra: mở http://localhost:5000/health, kết quả có dạng `{"status":"ok","database":"connected","time":"..."}`.
+
+Dừng và xóa container:
+
+```
+docker stop backend
+docker rm backend
+```
+
+### Tự build image từ mã nguồn
+
+```
+cd backend
+docker build -t danhgiakhanh/backend .
+```
+
+### Đẩy image lên Docker Hub
+
+```
+docker login
+docker push danhgiakhanh/backend
+```
+
+## 9. Triển khai
 
 (Sẽ cập nhật ở các câu sau)
