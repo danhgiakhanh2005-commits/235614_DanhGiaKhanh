@@ -1,0 +1,16 @@
+# Thư viện cài đặt
+node_modules/
+
+# Thông tin bí mật, KHÔNG được đưa lên GitHub
+.env
+.env.*
+!.env.example
+
+# Kết quả build
+dist/
+build/
+
+# Tệp rác
+*.log
+.DS_Store
+Thumbs.db
