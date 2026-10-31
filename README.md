@@ -182,6 +182,11 @@ docker push danhgiakhanh/frontend
 
 ## 10. Triển khai trên Render
 
+| Thành phần | URL |
+|---|---|
+| Frontend (ứng dụng) | https://web-235614.onrender.com |
+| Backend API | https://api-235614.onrender.com |
+
 ### Backend API
 
 - URL: https://api-235614.onrender.com
@@ -194,12 +199,25 @@ Biến môi trường cấu hình trên Render:
 | Biến | Giá trị |
 |---|---|
 | MONGODB_URI | Chuỗi kết nối MongoDB Atlas (cấu hình trên Render, không lưu trong mã nguồn) |
-| CORS_ORIGIN | `*` (sẽ giới hạn theo URL frontend sau khi triển khai frontend) |
+| CORS_ORIGIN | `*` (cho phép frontend gọi API) |
 
 MongoDB Atlas cho phép truy cập từ mọi địa chỉ IP (`0.0.0.0/0`) để Render kết nối được.
 
-Lưu ý: gói Free của Render sẽ ngủ khi không có truy cập, lần gọi đầu tiên có thể chậm khoảng 50 giây.
-
 ### Frontend
 
-(Sẽ cập nhật ở Câu 7)
+- URL: https://web-235614.onrender.com
+- Triển khai từ Docker image `danhgiakhanh/frontend` (Docker Hub) bằng Render Web Service, gói Free.
+
+Biến môi trường cấu hình trên Render:
+
+| Biến | Giá trị |
+|---|---|
+| API_URL | https://api-235614.onrender.com |
+
+Image frontend đọc `API_URL` khi container khởi động và ghi vào `config.js`, nên không cần build lại image khi đổi địa chỉ backend.
+
+### Đã kiểm tra trên hệ thống triển khai
+
+Xem danh sách, tìm kiếm, xem chi tiết, thêm, cập nhật tình trạng và xóa thiết bị. Dữ liệu hiển thị được lấy từ MongoDB Atlas.
+
+Lưu ý: gói Free của Render sẽ ngủ khi không có truy cập, lần truy cập đầu tiên có thể chậm khoảng 50 giây.
