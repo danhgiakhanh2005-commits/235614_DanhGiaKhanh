@@ -10,7 +10,7 @@
 
 ## 2. Công nghệ sử dụng
 
-- Frontend: React (Vite)
+- Frontend: React (Vite), nginx khi đóng gói Docker
 - Backend: Node.js, Express, Mongoose
 - Cơ sở dữ liệu: MongoDB Atlas
 - Đóng gói: Docker, Docker Hub
@@ -22,7 +22,7 @@
 ```
 235614_DanhGiaKhanh/
 ├── backend/     # API Node.js + Express (có Dockerfile)
-├── frontend/    # Giao diện React
+├── frontend/    # Giao diện React (có Dockerfile)
 ├── .gitignore
 └── README.md
 ```
@@ -95,6 +95,8 @@ Frontend lấy địa chỉ API theo thứ tự ưu tiên:
 2. Biến môi trường `VITE_API_URL`
 3. Mặc định `http://localhost:5000`
 
+Khi chạy bằng Docker, tệp `config.js` được tạo lại mỗi lần container khởi động từ biến môi trường `API_URL`.
+
 ## 8. Chạy backend bằng Docker
 
 Image trên Docker Hub: https://hub.docker.com/r/danhgiakhanh/backend
@@ -138,6 +140,46 @@ docker login
 docker push danhgiakhanh/backend
 ```
 
-## 9. Triển khai
+## 9. Chạy frontend bằng Docker
+
+Image trên Docker Hub: https://hub.docker.com/r/danhgiakhanh/frontend
+
+Image dùng nginx phục vụ bản build React. Địa chỉ backend được truyền qua biến môi trường `API_URL` khi chạy container, không cần build lại image khi đổi backend.
+
+### Chạy từ image trên Docker Hub
+
+```
+docker run -d --name frontend -p 8080:80 -e API_URL=http://localhost:5000 danhgiakhanh/frontend
+```
+
+Mở http://localhost:8080 (backend phải đang chạy tại địa chỉ `API_URL`).
+
+| Biến | Ý nghĩa |
+|---|---|
+| API_URL | Địa chỉ backend API mà trình duyệt sẽ gọi |
+| PORT | Cổng nginx lắng nghe trong container (mặc định 80) |
+
+Dừng và xóa container:
+
+```
+docker stop frontend
+docker rm frontend
+```
+
+### Tự build image từ mã nguồn
+
+```
+cd frontend
+docker build -t danhgiakhanh/frontend .
+```
+
+### Đẩy image lên Docker Hub
+
+```
+docker login
+docker push danhgiakhanh/frontend
+```
+
+## 10. Triển khai
 
 (Sẽ cập nhật ở các câu sau)
