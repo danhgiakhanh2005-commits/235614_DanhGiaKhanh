@@ -216,8 +216,15 @@ Biến môi trường cấu hình trên Render:
 
 Image frontend đọc `API_URL` khi container khởi động và ghi vào `config.js`, nên không cần build lại image khi đổi địa chỉ backend.
 
-### Đã kiểm tra trên hệ thống triển khai
-
-Xem danh sách, tìm kiếm, xem chi tiết, thêm, cập nhật tình trạng và xóa thiết bị. Dữ liệu hiển thị được lấy từ MongoDB Atlas.
-
 Lưu ý: gói Free của Render sẽ ngủ khi không có truy cập, lần truy cập đầu tiên có thể chậm khoảng 50 giây.
+
+## 11. Thông tin nộp bài
+
+| Trường thông tin | Nội dung |
+|---|---|
+| Link_GitHub | https://github.com/danhgiakhanh2005-commits/235614_DanhGiaKhanh |
+| Link_Docker_Backend | https://hub.docker.com/r/danhgiakhanh/backend |
+| Link_Docker_Frontend | https://hub.docker.com/r/danhgiakhanh/frontend |
+| Link_Render_App | https://web-235614.onrender.com |
+| Link_Render_API | https://api-235614.onrender.com |
+| Link_Data_MongoDB | MongoDB Atlas, database `235614_DanhGiaKhanh`, collection `devices` |
